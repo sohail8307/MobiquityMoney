@@ -1,0 +1,15 @@
+.user-nav {
+  background-color: #ffe6e6;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-nav div {
+  margin: 15px;
+}
+
+.is-active {
+  color: black;
+}

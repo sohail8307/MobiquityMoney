@@ -1,0 +1,10 @@
+form,
+.alert {
+  width: 50%;
+  margin: 10px auto;
+}
+
+input[type='search'] {
+  font-style: italic;
+}
+

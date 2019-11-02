@@ -1,0 +1,33 @@
+.bg-box {
+  border: 1px solid red;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px red;
+  margin: 25px auto;
+  width: 50%;
+  background-image: url('./background.jpg');
+  background-repeat: repeat-y;
+}
+
+.form-heading {
+  font-size: 35px;
+  font-weight: bold;
+  background: -webkit-linear-gradient(#e00, #e9a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sign-in-form,
+.sign-up-form {
+  text-align: left;
+
+}
+
+input {
+  font-style: italic;
+}
+
+.display-card {
+  position: fixed;
+  bottom: 0;
+}
