@@ -4,6 +4,7 @@ import SignIn from './SignIn'
 import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
 import AddUser from './AddUser'
 import ViewUser from './ViewByPhoneNumber'
+import ViewAll from './ViewAll'
 import Side from './Side'
 import './Dashboard.css'
 
@@ -63,6 +64,14 @@ class Dashboard extends Component {
             </NavLink>
           </div>
           <div>
+            <NavLink 
+              to='/Dashboard/ViewAll' 
+              activeClassName='is-active'
+            >
+              ViewAll&nbsp;&nbsp;
+            </NavLink>
+          </div>
+          <div>
             <button
               onClick = {this.signOutHandler}
               className='btn btn-secondary sign-out-button'
@@ -74,6 +83,7 @@ class Dashboard extends Component {
         <Switch>
           <Route path='/Dashboard/AddUser' component={AddUser} />
           <Route path='/Dashboard/ViewUser' component={ViewUser} />
+          <Route path='/Dashboard/ViewAll' component={ViewAll} />
         </Switch>
       </div>
     )

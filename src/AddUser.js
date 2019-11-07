@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
-import Axios from 'axios'
+import axios from 'axios'
 
 class AddUser extends Component {
   state = {
@@ -39,7 +39,7 @@ class AddUser extends Component {
     let body = {}
     for(const [key, value] of data.entries())
       body[key] = value
-    Axios.post('http://172.19.5.213:8080/add', body, {
+    axios.post('http://172.19.5.213:8080/add', body, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -2,21 +2,22 @@ import React, { Component } from 'react'
 import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
 import {Redirect} from 'react-router-dom'
 import Dashboard from './Dashboard'
-import Axios from 'axios'
+import axios from 'axios'
 import './Form.css'
 
 class SignIn extends Component {
   state = {
     redirect: false,
     err: false,
-    username: ''
+    username: '',
+    password: ''
   }
 
   signInHandler = event => {
     event.preventDefault()
-    let username = event.target.username.value;
-    let password = event.target.password.value;
-    Axios.post('http://172.19.5.213:8080/validate', {
+    let username = this.state.username;
+    let password = this.state.password;
+    axios.post('http://192.168.105.162:8080/adminlogin', {
       username: username,
       password: password
     }, {
@@ -26,7 +27,7 @@ class SignIn extends Component {
     })
       .then(res => {
         if(res.data) {
-          console.log(res)
+          //console.log(res)
           let ck = new Cookies();
           let date = new Date();
           date.setTime(date.getTime() + (60 * 60 * 1000));
@@ -35,6 +36,7 @@ class SignIn extends Component {
             token: 'xxx1234'
           }, {expires: date, path: '/'});
           this.setState({redirect: true});
+          //console.log(this.state.redirect)
         } else {
           this.setState({err: true})
         }
@@ -100,6 +102,7 @@ class SignIn extends Component {
               id='password'
               required
               className="form-control"
+              onChange={this.myChangeHandler}
             />
 
             <br/>

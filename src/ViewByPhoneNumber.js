@@ -3,6 +3,7 @@ import Axios from 'axios'
 import './ViewByPhoneNumber.css'
 import User from './User'
 import './Form.css'
+import './User.css'
 
 class SearchUser extends Component {
   state = {
@@ -17,19 +18,24 @@ class SearchUser extends Component {
       alert("Invalid Number");
       return false;
     }
-    Axios.get(`http://172.19.5.213:8080/view/${number}`, {
+    Axios.get(`http://192.168.105.162:8080/view/${number}`, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(res => {
-        if(res.data)
+        if(res.data) {
           this.setState({user: res.data})
-        else
+          this.setState({err: false})
+        }
+        else {
           this.setState({err: true})
+          this.setState({user: null})
+        }
       })
       .catch(err => {
         this.setState({err: true})
+        this.setState({user: null})
       })
   }
 
@@ -50,7 +56,21 @@ class SearchUser extends Component {
         <div>
           {
             (this.state.user && !this.state.err) && (
-              <User details={this.state.user} />
+              <table className='user-details table-bordered'>
+                <thead>
+                  <tr>
+                    <th>Phone Number</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <User details={this.state.user} />
+                </tbody>
+              </table>
             ) 
           }
           {
