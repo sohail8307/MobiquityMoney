@@ -4,33 +4,28 @@ import axios from 'axios'
 
 class AddUser extends Component {
   state = {
+    errFirstName: false,
+    errLastName: false,
+    errAge: false,
+    errPh: false,
+    errEmail: false,
+    errPin: false,
     errorAdd: false,
     successAdd: false,
-    username: '',
+    firstname: '',
     lastname: '',
     age: null,
-    Ph: 0,
-    errormessage: '',
-    errormessageage:'',
-    errormessageph:'',
-    err1: 0,
-    err2: 0,
-    err3: 0,
-    err4: 0,
-    err5: 0,
-    err6: 0,
+    phoneNo: null,
     email: '',
-    errfn:'',
     gender: '',
-    Houseno: '',
-    Street: '',
-    City: '',
+    houseNo: '',
+    street: '',
+    city: '',
     pincode: '',
     country: '', 
     region: '',
-    selectValue: '',
-    
   }
+
   mySubmitHandler = event => {       
     event.preventDefault();
     event.persist();
@@ -39,7 +34,7 @@ class AddUser extends Component {
     let body = {}
     for(const [key, value] of data.entries())
       body[key] = value
-    axios.post('http://172.19.5.213:8080/add', body, {
+    axios.post('http://192.168.105.162:8080/add', body, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -59,132 +54,86 @@ class AddUser extends Component {
   }
   
 
-  myChangeHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    this.setState({[nam]: val});
+  changeHandler = async(name, value) => {
+    await this.setState({[name]: value});
   }
   
 
-  myChangefirstnameHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let errfn = '';
-    this.setState({err1: 0})
+  nameHandler = async(event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.changeHandler(name, value);
+
     var namepatt = /^[a-zA-Z]{3,20}$/;
-    if (val !=="" && !namepatt.test(val)) {
-      errfn = <strong>Your first name must be atleast 3 alphabets and not be a number</strong>;
-      this.setState({err1: 1})
+    if(name === 'firstname') {
+      if(value === '' || !namepatt.test(value))
+        this.setState({errFirstName: true});
+      else
+        this.setState({errFirstName: false});
+    } else {
+      if(value === '' || !namepatt.test(value))
+        this.setState({errLastName: true});
+      else
+        this.setState({errLastName: false});
     }
-      
-    this.setState({errormessagefname: errfn});
-    this.setState({[nam]: val});
+    
   }
 
-  myChangelastnameHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let errln = '';
-    this.setState({err2: 0})
-    var namepatt = /^[a-zA-Z]{1,20}$/;
-    if (val !=="" && !namepatt.test(val)) {
-        errln = <strong>Your lastname must not be a number</strong>;
-        this.setState({err2: 1})
-    }
-      
-    this.setState({errormessagelname: errln});
-    this.setState({[nam]: val});
-  }
-  
-  myChangeageHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let err = '';
-    this.setState({err3: 0})
-    if (nam === "age") {
-      if (val !=="" && !Number(val)) {
-        err = <strong>Your age must be a number</strong>;
-        this.setState({err3: 1})
-      }
-      if (val !=="" && val<=17) {
-        err = <strong>Your age must be a above 18 years</strong>;
-        this.setState({err3: 1})
-      }
-    }
-    this.setState({errormessageage: err});
-    this.setState({[nam]: val});
-   
+  ageHandler = event => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.changeHandler(name, value);
+    
+    if(value === '' || value <= 17 || !Number(value))
+      this.setState({errAge: true});
+    else  
+      this.setState({errAge: false});   
   }
 
   
-  myPhoneHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let errp = '';
-    this.setState({err4: 0})
-        if (!(val<=9999999999 && val>=1000000000)) {
-          errp = <strong>Your Phone number must be 10 digit</strong>;
-          this.setState({err4: 1})
-        }
-    this.setState({errormessageph: errp});
-    this.setState({[nam]: val});
+  phoneHandler = event => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.changeHandler(name, value);
+    if(value === '' || value < 1000000000 || value > 9999999999 || !Number(value))
+      this.setState({errPh: true});
+    else
+      this.setState({errPh: false});
   }
 
-  myEmailHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let errmail = '';
-    this.setState({err5: 0})
-    var namepatt = /^[a-zA-Z0-9]+[@][a-z]+[.][a-z]/;
-      if (val !=="" && !namepatt.test(val)) {
-        errmail = <strong>Email must be of the type a@a.com</strong>;
-        this.setState({err5: 1})
-      }
-      
-    this.setState({errormessageemail: errmail});
-    this.setState({[nam]: val});
+  emailHandler = event => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.changeHandler(name, value);
+
+    var emailpatt = /^[a-zA-Z0-9]+[@][a-z]+[.][a-z]/;
+    if(value === '' || !emailpatt.test(value)) 
+      this.setState({errEmail: true});
+    else
+      this.setState({errEmail: false});
+  }
+
+  selectCountry = value => {
+    this.changeHandler('country', value);
+  }
+
+  selectRegion = value => {
+    this.changeHandler('region', value);
+  }
   
-    }
   
 
-  myChangepincodeHandler = event => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    let errpin = '';
-    this.setState({err6: 0})
-   
-      if (val !== "" && (val <= 100000 || val >= 999999)) {
-        errpin = <strong>pin code must be 6 digit number</strong>;
-        this.setState({err6: 1})
-      }
-      
-    this.setState({errormessagepincode: errpin});
-    this.setState({[nam]: val});
+  pincodeHandler = event => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.changeHandler(name, value);
+    
+    if (value === '' || value < 100000 || value > 999999 || !Number(value)) 
+      this.setState({errPin: true});
+    else
+      this.setState({errPin: false});
   }
 
-  selectCountry = val => {
-    this.setState({ country: val });
-  }
-
-  selectRegion = val => {
-    this.setState({ region: val });
-  }
-
-  checkError = () => {
-    if(this.state.err1 === 1 
-      || this.state.err2 === 1 
-      || this.state.err3 ===1 
-      || this.state.err4 === 1
-      || this.state.err5 === 1 
-      || this.state.err6 === 1 
-    )
-      return 1;
-    return 0;
-  }
-
-  handleDropdownChange = (e) => {
-    this.setState({ gender: e.target.value });
-  }
   render() { 
     const { country, region } = this.state;
     return (
@@ -207,9 +156,10 @@ class AddUser extends Component {
         }
         <h2 className='form-heading'>New User SignUp</h2>
         <form onSubmit={this.mySubmitHandler}  className="needs-validation">
+
           <div className="form-group sign-up-form">
-            <label htmlFor = 'firstname'>
-              Enter your first name:&nbsp; 
+            <label htmlFor='firstname'>
+              Enter your first name:
             </label>    
             <input
               placeholder="Type your first name"
@@ -218,14 +168,19 @@ class AddUser extends Component {
               id='firstname'
               required
               className="form-control"
-              onBlur={this.myChangefirstnameHandler}
-              onSubmit={this.myChangeHandler}
+              onChange={this.nameHandler}
+              minLength='3'
+              maxLength='20'
             />
-            {this.state.errormessagefname }
+            {
+              this.state.errFirstName && (
+                <strong>First Name must have 3-20 alphabets</strong>
+              )
+            }
             <br/>
             
-            <label htmlFor = 'lastname'>
-              Enter your last name:&nbsp; 
+            <label htmlFor='lastname'>
+              Enter your last name: 
             </label> 
             <input
               placeholder="Type your last name"
@@ -234,29 +189,38 @@ class AddUser extends Component {
               id='lastname'
               required
               className="form-control"
-              onBlur={this.myChangelastnameHandler}
-              onSubmit={this.myChangeHandler}
+              onChange={this.nameHandler}
+              minLength='3'
+              maxLength='20'
             />
-            {this.state.errormessagelname }
+            {
+              this.state.errLastName && (
+                <strong>Last Name must have 3-20 alphabets</strong>
+              )
+            }
             <br/>
 
-            <label htmlFor= 'age'>
-              Enter your age:&nbsp; 
+            <label htmlFor='age'>
+              Enter your age:
             </label>  
             <input
               placeholder="Type your age"
-              type='text'
+              type='number'
               name='age'
               id='age'
               required
               className="form-control"
-              onBlur={this.myChangeageHandler}
-              onSubmit={this.myChangeageHandler}
+              onChange={this.ageHandler}
+              min='18'
             />
-            {this.state.errormessageage }
-            <br/>
+            {
+              this.state.errAge && (
+                <strong>Invalid, age must be atleast 18</strong>
+              )
+             }
+            <hr/>
      
-            <label htmlFor= 'ph'>
+            <label htmlFor='ph'>
               Enter phone number:&nbsp;  
             </label> 
             <input
@@ -266,13 +230,18 @@ class AddUser extends Component {
               id='ph'
               required
               className="form-control"
-              onBlur={this.myPhoneHandler}
-              onSubmit={this.myChangeHandler}
+              onChange={this.phoneHandler}
+              min='1000000000'
+              max='9999999999'
             />
-            {this.state.errormessageph}
+            {
+              this.state.errPh && (
+                <strong>Number must have 10 digits</strong>
+              )
+            }
             <br/>
 
-            <label htmlFor= 'email'>
+            <label htmlFor='email'>
               Enter your Email:&nbsp;  
             </label> 
             <input
@@ -282,21 +251,28 @@ class AddUser extends Component {
               id='email'
               required
               className="form-control"
-              onBlur={this.myEmailHandler}
+              onChange={this.emailHandler}
+              maxLength='40'
             />
-            {this.state.errormessageemail}
+            {
+              this.state.errEmail && (
+                <strong>Invalid Format</strong>
+              )
+            }
             <br/>
 
             <label htmlFor= 'dropdown'>
-              Gender:&nbsp; 
+              Gender:
             </label> 
             <select 
               id="dropdown" 
-              onChange={this.handleDropdownChange}  
+              onChange={e => this.changeHandler(e.target.name, e.target.value)}  
               required
               className="form-control"
               name='gender'
+              
             >
+              <option value=''>Select Gender</option>
               <option value="Do not want to disclose">Do not want to disclose</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -305,7 +281,7 @@ class AddUser extends Component {
             <br/>
      
             <label htmlFor= 'Addrhouseno'>
-              Address House number:&nbsp; 
+              House number: 
             </label>  
             <input
               placeholder="House number"
@@ -313,13 +289,13 @@ class AddUser extends Component {
               name='houseNo'
               id='Addrhouseno'
               className="form-control"
-              onBlur={this.myChangeHandler}
-              onSubmit={this.myChangeHandler}
+              maxLength='10'
+              onChange={e => this.changeHandler(e.target.name, e.target.value)}
               />
             <br/>
 
             <label htmlFor= 'Addrhousestreet'>
-              Address Street:&nbsp; 
+              Street and Locality: 
             </label>  
             <input
               placeholder="Street Name"
@@ -328,13 +304,13 @@ class AddUser extends Component {
               id='Addrhousestreet'
               required
               className="form-control"
-              onBlur={this.myChangeHandler}
-              onSubmit={this.myChangeHandler}
+              maxLength='50'
+              onChange={e => this.changeHandler(e.target.name, e.target.value)}
             />
             <br/>
 
             <label htmlFor= 'Addrhousecountry'>
-              Address Country:&nbsp; 
+              Country
             </label>    
             <CountryDropdown
               id='Addrhousecountry'
@@ -347,7 +323,7 @@ class AddUser extends Component {
             <br/>
 
             <label htmlFor= 'Addrhousestate'>
-              Address State:&nbsp; 
+              State:
             </label>    
             <RegionDropdown
               id='Addrhousestate'
@@ -360,36 +336,41 @@ class AddUser extends Component {
             />
             <br/>
         
-            <label>
-              Address City:&nbsp; 
+            <label htmlFor='city'>
+              City:
             </label> 
             <input
               placeholder="City"
+              id='city'
               type='text'
               name='city'
               required
               className="form-control"
-              onBlur={this.myChangeHandler}
-              onSubmit={this.myChangeHandler}
+              maxLength='20'
+              onChange={e => this.changeHandler(e.target.name, e.target.value)}
             />
             <br/>
 
-            <label>
+            <label htmlFor='pin'>
               Address pincode:&nbsp; 
             </label>
             <input
               placeholder="pincode"
-              type='text'
+              id='pin'
+              type='number'
               name='pincode'
               required
               className="form-control"
-              onBlur={this.myChangepincodeHandler}
-              onSubmit={this.myChangeHandler}
+              onChange={this.pincodeHandler}
             />
-            {this.state.errormessagepincode}
+            {
+              this.state.errPin && (
+                <strong>Pincode must have 6 digits</strong>
+              )
+            }
             <br/>
 
-            <button type="submit" className="btn btn-primary" disabled={this.checkError()}>Submit</button>     
+            <button type="submit" className="btn btn-primary">Submit</button>     
           </div>
         </form>
       </div>

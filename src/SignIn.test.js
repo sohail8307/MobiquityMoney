@@ -2,7 +2,7 @@ import React from 'react';
 import SignIn from './SignIn';
 import {shallow} from 'enzyme'
 import axios from 'axios'
-import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
+
 
 
 jest.mock('axios')
@@ -18,8 +18,12 @@ describe("Smoke test SignIn component", () => {
 })
 
 describe("Sign In simulate", () => {
-  it("User name change", ()=> {
-    const signIn = shallow(<SignIn />)
+  let signIn;
+  beforeEach(() => {
+    signIn = shallow(<SignIn />);
+  })
+  it("User name entry changes state", ()=> {
+    //const signIn = shallow(<SignIn />)
     signIn.find('input[type="text"]').simulate('change', {
       target: {
         name: 'username',
@@ -29,8 +33,8 @@ describe("Sign In simulate", () => {
     expect(signIn.state('username')).toEqual('username')
   })
 
-  it("Password change", ()=> {
-    const signIn = shallow(<SignIn />)
+  it("Password entry changes state", ()=> {
+    //const signIn = shallow(<SignIn />)
     signIn.find('input[type="password"]').simulate('change', {
       target: {
         name: 'password',
@@ -40,8 +44,8 @@ describe("Sign In simulate", () => {
     expect(signIn.state('password')).toEqual('password')
   })
 
-  it("Sign In simulate", async () => {
-    const signIn = shallow(<SignIn />)
+  it("Sign In success", async () => {
+    //const signIn = shallow(<SignIn />)
     axios.post.mockImplementation((url, data, header) => Promise.resolve({ data: true }));
     signIn.find('input[type="text"]').simulate('change', {
       target: {
@@ -66,5 +70,33 @@ describe("Sign In simulate", () => {
     await signIn.find('form').simulate('submit', event)
     
     expect(signIn.state('redirect')).toBe(true)
+  })
+
+  it("Sign In failure", async () => {
+    //const signIn = shallow(<SignIn />)
+    axios.post.mockImplementation((url, data, header) => Promise.resolve({ data: false }));
+    signIn.find('input[type="text"]').simulate('change', {
+      target: {
+        name: 'username',
+        value: 'username'
+      }
+    })
+
+    signIn.find('input[type="password"]').simulate('change', {
+      target: {
+        name: 'password',
+        value: 'password'
+      }
+    })
+
+    Object.defineProperty(window.document, 'cookie', {
+      writable: true,
+      value: 'user=username',
+    });
+    
+    const event = Object.assign(jest.fn(), {preventDefault: () => {}})
+    await signIn.find('form').simulate('submit', event)
+    
+    expect(signIn.state('err')).toBe(true)
   })
 })

@@ -22,9 +22,7 @@ class Dashboard extends Component {
   }*/
   signOutHandler = event => {
     let ck2 = new Cookies()
-    alert(ck2.get('user').username)
     ck2.remove('user', {path: '/'})
-    
     this.setState({redirect: true})
   }
   render() {

@@ -36,13 +36,12 @@ class SignIn extends Component {
             token: 'xxx1234'
           }, {expires: date, path: '/'});
           this.setState({redirect: true});
-          //console.log(this.state.redirect)
         } else {
           this.setState({err: true})
         }
       })
-      .catch(err => {
-          this.setState({err: true})
+      .catch(error => {
+          this.setState({err: true})  
       })
       /*let ck = new Cookies();
       let date = new Date();
