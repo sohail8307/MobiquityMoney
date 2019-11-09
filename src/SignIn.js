@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
+import {Cookies} from 'react-cookie'
 import {Redirect} from 'react-router-dom'
-import Dashboard from './Dashboard'
 import axios from 'axios'
 import './Form.css'
 
@@ -9,6 +8,7 @@ class SignIn extends Component {
   state = {
     redirect: false,
     err: false,
+    errMsg: '',
     username: '',
     password: ''
   }
@@ -35,13 +35,23 @@ class SignIn extends Component {
             username: this.state.username,
             token: 'xxx1234'
           }, {expires: date, path: '/'});
-          this.setState({redirect: true});
+          this.setState({
+            redirect: true,
+            err: false,
+            errMsg: ''
+          });
         } else {
-          this.setState({err: true})
+          this.setState({
+            err: true,
+            errMsg: 'Invalid Login'
+          });
         }
       })
       .catch(error => {
-          this.setState({err: true})  
+        this.setState({
+          err: true,
+          errMsg: 'Connection failure'
+        });
       })
       /*let ck = new Cookies();
       let date = new Date();
@@ -112,7 +122,7 @@ class SignIn extends Component {
         {
           this.state.err && (
             <div className='alert alert-warning'>
-              Invalid Login
+              {this.state.errMsg}
             </div>
           )
         }

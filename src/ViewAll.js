@@ -7,6 +7,7 @@ class ViewAll extends Component {
   state = {
     users: [],
     success: false,
+    err: false,
     errMsg: ''
   }
   componentDidMount() {
@@ -14,15 +15,28 @@ class ViewAll extends Component {
       .then(res => {
         if(res.data) {
           console.log(res.data)
-          this.setState({success: true})
-          this.setState({users: res.data})
-          this.setState({errMsg: ''})
+          this.setState({
+            success: true,
+            users: res.data,
+            err: false,
+            errMsg: ''
+          });
         } else {
-          this.setState({errMsg: 'No Data found'})
+          this.setState({
+            err: true,
+            users: [],
+            errMsg: 'No data available',
+            success: false
+          });
         }
       })
       .catch(err => {
-        this.setState({errMsg: 'Connection Error'})
+        this.setState({
+          err: true,
+          users: [],
+          errMsg: 'Connection failure',
+          success: false
+        });
       })
   }
 

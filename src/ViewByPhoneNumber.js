@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Axios from 'axios'
+import axios from 'axios'
 import './ViewByPhoneNumber.css'
 import User from './User'
 import './Form.css'
@@ -7,35 +7,50 @@ import './User.css'
 
 class SearchUser extends Component {
   state = {
+    number: null,
     user: null,
-    err: false
+    err: false,
+    errMsg: ''
+  }
+
+  numChangeHandler = event => {
+    this.setState({number: event.target.value});
   }
 
   handleSumbit = event => {
     event.preventDefault();
-    let number = event.target.phone.value;
+    let number = this.state.number;
     if(!(number >= 1000000000 && number <= 9999999999)) {
       alert("Invalid Number");
       return false;
     }
-    Axios.get(`http://192.168.105.162:8080/view/${number}`, {
+    axios.get(`http://192.168.105.162:8080/view/${number}`, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(res => {
         if(res.data) {
-          this.setState({user: res.data})
-          this.setState({err: false})
+          this.setState({
+            user: res.data,
+            err: false,
+            errMsg: ''
+          });
         }
         else {
-          this.setState({err: true})
-          this.setState({user: null})
+          this.setState({
+            user: null,
+            err: true,
+            errMsg: 'No data found'
+          });
         }
       })
       .catch(err => {
-        this.setState({err: true})
-        this.setState({user: null})
+        this.setState({
+          user: null,
+          err: true,
+          errMsg: 'Connection failure'
+        });
       })
   }
 
@@ -48,7 +63,9 @@ class SearchUser extends Component {
               <div className='input-group-prepend'>
                 <span className='input-group-text'>Ph</span>
               </div>
-              <input type='search' className='form-control' placeholder='Enter Phone Number' name='phone' required autoFocus />
+              <input type='search' className='form-control' placeholder='Enter Phone Number' name='phone' required autoFocus 
+              onChange={this.numChangeHandler}
+              />
               <button type='submit' className='btn btn-primary' >Go</button>
             </div>
           </form>
@@ -76,7 +93,7 @@ class SearchUser extends Component {
           {
             this.state.err && (
               <div className='alert alert-danger'>
-                No Data found
+                {this.state.errMsg}
               </div>
             )
           }

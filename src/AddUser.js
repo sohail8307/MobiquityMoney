@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import axios from 'axios'
 
 class AddUser extends Component {
@@ -11,6 +11,7 @@ class AddUser extends Component {
     errEmail: false,
     errPin: false,
     errorAdd: false,
+    errMsg: '',
     successAdd: false,
     firstname: '',
     lastname: '',
@@ -40,17 +41,29 @@ class AddUser extends Component {
       }
     })
       .then(res => {
-        console.log(res)
+        //console.log(res)
         if(res.data) {
-          this.setState({successAdd: true});
+          this.setState({
+            successAdd: true,
+            errorAdd: false,
+            errMsg: ''
+          });
           event.target.reset();
         }
         else
-          this.setState({errorAdd: true})
+          this.setState({
+            errorAdd: true,
+            errMsg: 'Failed to add user',
+            successAdd: false
+          });
       })
       .catch(err => {
-        this.setState({errorAdd: true})
-      })
+        this.setState({
+          errorAdd: true,
+          errMsg: 'Connection failure, try again',
+          successAdd: false
+        });
+      });
   }
   
 
@@ -59,7 +72,7 @@ class AddUser extends Component {
   }
   
 
-  nameHandler = async(event) => {
+  nameHandler = event => {
     let name = event.target.name;
     let value = event.target.value;
     this.changeHandler(name, value);
@@ -142,7 +155,7 @@ class AddUser extends Component {
           this.state.errorAdd && (
             <div className='alert alert-danger alert-dismissible display-card'>
               <button type="button" className="close" data-dismiss="alert">&times;</button>
-              Couldnot add user.
+              {this.state.errMsg}
             </div>
           )
         }

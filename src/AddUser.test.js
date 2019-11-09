@@ -2,7 +2,6 @@ import React from 'react';
 import Add from './AddUser';
 import {shallow} from 'enzyme'
 import axios from 'axios'
-import { exportAllDeclaration } from '@babel/types';
 
 jest.mock('axios')
 
@@ -138,7 +137,7 @@ describe('Add user form simulation', () => {
     expect(add.state('houseNo')).toEqual('No.23');
   });
 
-  it('House number valid entry', () => {
+  it('Street valid entry', () => {
     add.find('input#Addrhousestreet').simulate('change', {
       target: {
         name: 'street',
@@ -186,4 +185,170 @@ describe('Add user form simulation', () => {
     expect(add.state('errPin')).toBe(true);
   });
 
-})
+  it('Add user success', async() => {
+
+    axios.post.mockImplementation((url, data, header) => Promise.resolve({ data: true }));
+    add.find('input#firstname').simulate('change', {
+      target: {
+        name: 'firstname',
+        value: 'firstname'
+      }
+    });
+
+    add.find('input#lastname').simulate('change', {
+      target: {
+        name: 'lastname',
+        value: 'lastname'
+      }
+    });
+
+    add.find('input#age').simulate('change', {
+      target: {
+        name: 'age',
+        value: '19'
+      }
+    });
+
+    add.find('input#ph').simulate('change', {
+      target: {
+        name: 'phoneNo',
+        value: '1234567890'
+      }
+    });
+
+    add.find('input#email').simulate('change', {
+      target: {
+        name: 'email',
+        value: 'aaa@x.com'
+      }
+    });
+
+    add.find('select#dropdown').simulate('change', {
+      target: {
+        name: 'gender',
+        value: 'Male'
+      }
+    });
+
+    add.find('input#Addrhouseno').simulate('change', {
+      target: {
+        name: 'houseNo',
+        value: 'No.23'
+      }
+    });
+
+    add.find('input#Addrhousestreet').simulate('change', {
+      target: {
+        name: 'street',
+        value: '11th Cross'
+      }
+    });
+
+    add.find('#Addrhousecountry').simulate('change', 'India');
+    add.find('#Addrhousestate').simulate('change', 'Karnataka');
+
+    add.find('input#city').simulate('change', {
+      target: {
+        name: 'city',
+        value: 'Blore'
+      }
+    });
+
+    add.find('input#pin').simulate('change', {
+      target: {
+        name: 'pincode',
+        value: '123456'
+      }
+    });
+
+    const event = Object.assign(jest.fn(), {preventDefault: () => {}, persist: () => {}});
+    await add.find('form').simulate('submit', event);
+
+    expect(add.state('successAdd')).toBe(true);
+
+  });
+
+  it('Add user failure', async() => {
+
+    axios.post.mockImplementation((url, data, header) => Promise.resolve({ data: false }));
+    add.find('input#firstname').simulate('change', {
+      target: {
+        name: 'firstname',
+        value: 'firstname'
+      }
+    });
+
+    add.find('input#lastname').simulate('change', {
+      target: {
+        name: 'lastname',
+        value: 'lastname'
+      }
+    });
+
+    add.find('input#age').simulate('change', {
+      target: {
+        name: 'age',
+        value: '19'
+      }
+    });
+
+    add.find('input#ph').simulate('change', {
+      target: {
+        name: 'phoneNo',
+        value: '1234567890'
+      }
+    });
+
+    add.find('input#email').simulate('change', {
+      target: {
+        name: 'email',
+        value: 'aaa@x.com'
+      }
+    });
+
+    add.find('select#dropdown').simulate('change', {
+      target: {
+        name: 'gender',
+        value: 'Male'
+      }
+    });
+
+    add.find('input#Addrhouseno').simulate('change', {
+      target: {
+        name: 'houseNo',
+        value: 'No.23'
+      }
+    });
+
+    add.find('input#Addrhousestreet').simulate('change', {
+      target: {
+        name: 'street',
+        value: '11th Cross'
+      }
+    });
+
+    add.find('#Addrhousecountry').simulate('change', 'India');
+    add.find('#Addrhousestate').simulate('change', 'Karnataka');
+
+    add.find('input#city').simulate('change', {
+      target: {
+        name: 'city',
+        value: 'Blore'
+      }
+    });
+
+    add.find('input#pin').simulate('change', {
+      target: {
+        name: 'pincode',
+        value: '123456'
+      }
+    });
+
+    const event = Object.assign(jest.fn(), {preventDefault: () => {}, persist: () => {}});
+    await add.find('form').simulate('submit', event);
+
+    expect(add.state('errorAdd')).toBe(true);
+
+  });
+});
+

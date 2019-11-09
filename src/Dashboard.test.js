@@ -1,8 +1,6 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme'
-import {BrowserRouter} from 'react-router-dom'
+import {shallow} from 'enzyme'
 import Dashboard from './Dashboard'
-import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
 
 jest.mock('react-cookie')
 
