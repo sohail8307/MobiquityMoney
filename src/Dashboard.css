@@ -1,13 +1,16 @@
 .user-nav {
+  position: absolute;
+  left: 0;
+  top: 100px;
+  padding: 10px;
   background-color: #ffe6e6;
-  padding: 5px;
-  display: flex;
-  justify-content: center;
+  
+  
   align-items: center;
 }
 
 .user-nav div {
-  margin: 15px;
+  margin: 10px;
 }
 
 .is-active {

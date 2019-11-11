@@ -3,6 +3,8 @@ import {Cookies} from 'react-cookie'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import './Form.css'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Loader from 'react-loader-spinner'
 
 class SignIn extends Component {
   state = {
@@ -10,11 +12,13 @@ class SignIn extends Component {
     err: false,
     errMsg: '',
     username: '',
-    password: ''
+    password: '',
+    loading: false
   }
 
   signInHandler = event => {
     event.preventDefault()
+    this.setState({loading: true})
     let username = this.state.username;
     let password = this.state.password;
     axios.post('http://192.168.105.162:8080/adminlogin', {
@@ -38,19 +42,22 @@ class SignIn extends Component {
           this.setState({
             redirect: true,
             err: false,
-            errMsg: ''
+            errMsg: '',
+            loading: false
           });
         } else {
           this.setState({
             err: true,
-            errMsg: 'Invalid Login'
+            errMsg: 'Invalid Login',
+            loading: false
           });
         }
       })
       .catch(error => {
         this.setState({
           err: true,
-          errMsg: 'Connection failure'
+          errMsg: 'Connection failure',
+          loading: false
         });
       })
       /*let ck = new Cookies();
@@ -119,6 +126,14 @@ class SignIn extends Component {
             <button type="submit" className="btn btn-primary">Submit</button>
           </div>
         </form>
+        <Loader
+          visible={this.state.loading}
+          type="Puff"
+          color="#00BFFF"
+          height={100}
+          width={100}
+          style={{position: 'fixed', bottom: '50%', right: '50%'}}
+        />
         {
           this.state.err && (
             <div className='alert alert-warning'>

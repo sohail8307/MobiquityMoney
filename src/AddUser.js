@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import Loader from 'react-loader-spinner'
 import axios from 'axios'
 
 class AddUser extends Component {
   state = {
+    loading: false,
     errFirstName: false,
     errLastName: false,
     errAge: false,
@@ -30,11 +32,27 @@ class AddUser extends Component {
   mySubmitHandler = event => {       
     event.preventDefault();
     event.persist();
-    const data = new FormData(event.target)
+    this.setState({loading: true});
+    //console.log(data)
     //data.append("customerID", event.target.phoneNo.value)
-    let body = {}
-    for(const [key, value] of data.entries())
-      body[key] = value
+    let body = {
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      age: this.state.age,
+      phoneNo: this.state.phoneNo,
+      email: this.state.email,
+      gender: this.state.gender,
+      houseNo: this.state.houseNo,
+      street: this.state.street,
+      country: this.state.country,
+      state: this.state.region,
+      city: this.state.city,
+      pincode: this.state.pincode
+    }
+    //console.log(body)
+    //for(const [key, value] of data.entries())
+      //body[key] = value
+    console.log(body)
     axios.post('http://192.168.105.162:8080/add', body, {
       headers: {
         'Content-Type': 'application/json'
@@ -46,7 +64,8 @@ class AddUser extends Component {
           this.setState({
             successAdd: true,
             errorAdd: false,
-            errMsg: ''
+            errMsg: '',
+            loading: false
           });
           event.target.reset();
         }
@@ -54,14 +73,16 @@ class AddUser extends Component {
           this.setState({
             errorAdd: true,
             errMsg: 'Failed to add user',
-            successAdd: false
+            successAdd: false,
+            loading: false
           });
       })
       .catch(err => {
         this.setState({
           errorAdd: true,
           errMsg: 'Connection failure, try again',
-          successAdd: false
+          successAdd: false,
+          loading: false
         });
       });
   }
@@ -94,7 +115,7 @@ class AddUser extends Component {
 
   ageHandler = event => {
     let name = event.target.name;
-    let value = event.target.value;
+    let value = Number(event.target.value).toString();
     this.changeHandler(name, value);
     
     if(value === '' || value <= 17 || !Number(value))
@@ -106,7 +127,7 @@ class AddUser extends Component {
   
   phoneHandler = event => {
     let name = event.target.name;
-    let value = event.target.value;
+    let value = Number(event.target.value).toString();
     this.changeHandler(name, value);
     if(value === '' || value < 1000000000 || value > 9999999999 || !Number(value))
       this.setState({errPh: true});
@@ -138,7 +159,7 @@ class AddUser extends Component {
 
   pincodeHandler = event => {
     let name = event.target.name;
-    let value = event.target.value;
+    let value = Number(event.target.value).toString();
     this.changeHandler(name, value);
     
     if (value === '' || value < 100000 || value > 999999 || !Number(value)) 
@@ -386,6 +407,14 @@ class AddUser extends Component {
             <button type="submit" className="btn btn-primary">Submit</button>     
           </div>
         </form>
+        <Loader
+          visible={this.state.loading}
+          type="Puff"
+          color="#00BFFF"
+          height={100}
+          width={100}
+          style={{position: 'fixed', bottom: '50%', right: '50%'}}
+        />
       </div>
     )
   };

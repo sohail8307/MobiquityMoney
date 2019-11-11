@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import User from './User'
+import Loader from 'react-loader-spinner'
 import './User.css'
 
 class ViewAll extends Component {
@@ -8,9 +9,11 @@ class ViewAll extends Component {
     users: [],
     success: false,
     err: false,
-    errMsg: ''
+    errMsg: '',
+    loading: false
   }
   componentDidMount() {
+    this.setState({loading: true});
     axios.get('http://192.168.105.162:8080/viewall')
       .then(res => {
         if(res.data) {
@@ -19,14 +22,16 @@ class ViewAll extends Component {
             success: true,
             users: res.data,
             err: false,
-            errMsg: ''
+            errMsg: '',
+            loading: false
           });
         } else {
           this.setState({
             err: true,
             users: [],
             errMsg: 'No data available',
-            success: false
+            success: false,
+            loading: false
           });
         }
       })
@@ -35,7 +40,8 @@ class ViewAll extends Component {
           err: true,
           users: [],
           errMsg: 'Connection failure',
-          success: false
+          success: false,
+          loading: false
         });
       })
   }
@@ -43,6 +49,14 @@ class ViewAll extends Component {
   render() {
     return (
       <div>
+        <Loader
+          visible={this.state.loading}
+          type="Puff"
+          color="#00BFFF"
+          height={100}
+          width={100}
+          style={{position: 'fixed', bottom: '50%', right: '50%'}}
+        />
         {
           this.state.errMsg && (
             <div className='alert alert-warning'>
@@ -70,6 +84,15 @@ class ViewAll extends Component {
                 ))
               }
               </tbody>
+              <tfoot style={{textAlign: 'center'}}>
+                <tr>
+                  <td colSpan={6}>
+                  {
+                    `${this.state.users.length} results fetched.`
+                  }
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           )
         }

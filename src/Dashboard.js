@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import {Redirect, Route, BrowserRouter, Switch, NavLink} from 'react-router-dom'
-import SignIn from './SignIn'
-import {useCookies, Cookies, CookiesProvider} from 'react-cookie'
+import {Redirect, Route, Switch, NavLink} from 'react-router-dom'
+import {Cookies} from 'react-cookie'
 import AddUser from './AddUser'
 import ViewUser from './ViewByPhoneNumber'
 import ViewAll from './ViewAll'
-import Side from './Side'
 import './Dashboard.css'
 
 

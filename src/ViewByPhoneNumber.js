@@ -2,23 +2,26 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import './ViewByPhoneNumber.css'
 import User from './User'
+import Loader from 'react-loader-spinner'
 import './Form.css'
 import './User.css'
 
 class SearchUser extends Component {
   state = {
     number: null,
-    user: null,
+    user: [],
     err: false,
-    errMsg: ''
+    errMsg: '',
+    loading: false
   }
 
   numChangeHandler = event => {
-    this.setState({number: event.target.value});
+    this.setState({number: Number(event.target.value)});
   }
 
   handleSumbit = event => {
     event.preventDefault();
+    this.setState({loading: true});
     let number = this.state.number;
     if(!(number >= 1000000000 && number <= 9999999999)) {
       alert("Invalid Number");
@@ -30,26 +33,29 @@ class SearchUser extends Component {
       }
     })
       .then(res => {
-        if(res.data) {
+        if(res.data.length) {
           this.setState({
             user: res.data,
             err: false,
-            errMsg: ''
+            errMsg: '',
+            loading: false
           });
         }
         else {
           this.setState({
-            user: null,
+            user: [],
             err: true,
-            errMsg: 'No data found'
+            errMsg: 'No data found',
+            loading: false
           });
         }
       })
       .catch(err => {
         this.setState({
-          user: null,
+          user: [],
           err: true,
-          errMsg: 'Connection failure'
+          errMsg: 'Connection failure',
+          loading: false
         });
       })
   }
@@ -69,10 +75,18 @@ class SearchUser extends Component {
               <button type='submit' className='btn btn-primary' >Go</button>
             </div>
           </form>
+          <Loader
+            visible={this.state.loading}
+            type="Puff"
+            color="#00BFFF"
+            height={100}
+            width={100}
+            style={{position: 'fixed', bottom: '50%', right: '50%'}}
+          />
         </div>
         <div>
           {
-            (this.state.user && !this.state.err) && (
+            (this.state.user.length !== 0 && !this.state.err) && (
               <table className='user-details table-bordered'>
                 <thead>
                   <tr>
@@ -85,8 +99,25 @@ class SearchUser extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <User details={this.state.user} />
+                { 
+                  this.state.user.map((item, index) => (
+                    <User key={index} details={item} />
+                  ))
+                }
                 </tbody>
+                <tfoot style={{textAlign: 'center'}}>
+                  <tr>
+                    <td colSpan={6}>
+                    {
+                      this.state.user.length > 1 ? (
+                        <div className='alert alert-warning'>Warning! More than 1 user found</div>
+                      ) : (
+                        <div className='alert alert-success'>User fetched successfully</div>
+                      )
+                    }
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             ) 
           }
