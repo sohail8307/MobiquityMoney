@@ -44,5 +44,6 @@ input {
 .display-card {
   position: fixed;
   bottom: 0;
+  margin: 10px auto;
   z-index: 1;
 }

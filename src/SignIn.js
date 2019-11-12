@@ -16,9 +16,7 @@ class SignIn extends Component {
     loading: false
   }
 
-  componentDidMount() {
-    console.log(process.env)
-  }
+  
 
   signInHandler = event => {
     event.preventDefault()
@@ -58,9 +56,12 @@ class SignIn extends Component {
         }
       })
       .catch(error => {
+        let message = 'Connection failure';
+        if(error.response)
+          message = error.response.data.message
         this.setState({
           err: true,
-          errMsg: 'Connection failure',
+          errMsg: message,
           loading: false
         });
       })

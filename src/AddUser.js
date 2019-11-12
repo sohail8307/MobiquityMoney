@@ -29,6 +29,8 @@ class AddUser extends Component {
     pincode: '',
     country: '', 
     region: '',
+    errAlert: false,
+    succAlert: false
   }
 
   mySubmitHandler = event => {       
@@ -50,7 +52,7 @@ class AddUser extends Component {
       country: this.state.country,
       state: this.state.region,
       city: this.state.city,
-      pincode: this.state.pincode
+      pincode: this.state.pincode,
     }
     //console.log(body)
     //for(const [key, value] of data.entries())
@@ -68,7 +70,8 @@ class AddUser extends Component {
             successAdd: true,
             errorAdd: false,
             errMsg: '',
-            loading: false
+            loading: false,
+            succAlert: true
           });
           event.target.reset();
         }
@@ -77,15 +80,20 @@ class AddUser extends Component {
             errorAdd: true,
             errMsg: 'Failed to add user',
             successAdd: false,
-            loading: false
+            loading: false,
+            errAlert: true
           });
       })
       .catch(err => {
+        let message = 'Connection failure, try again';
+        if(err.response)
+          message = err.response.data.message;
         this.setState({
           errorAdd: true,
-          errMsg: 'Connection failure, try again',
+          errMsg: message,
           successAdd: false,
-          loading: false
+          loading: false,
+          errAlert: true
         });
       });
   }
@@ -158,8 +166,6 @@ class AddUser extends Component {
     this.changeHandler('region', value);
   }
   
-  
-
   pincodeHandler = event => {
     let name = event.target.name;
     let value = Number(event.target.value).toString();
@@ -176,18 +182,18 @@ class AddUser extends Component {
     return (
       <div className='bg-box'>
         {
-          this.state.errorAdd && (
-            <div className='alert alert-danger alert-dismissible display-card'>
-              <button type="button" className="close" data-dismiss="alert">&times;</button>
+          (this.state.errorAdd && this.state.errAlert) && (
+            <div className='alert alert-danger add-alert display-card'>
               {this.state.errMsg}
+              <span onClick={e => {this.setState({errAlert: false})}}>&nbsp;&times;</span>
             </div>
           )
         }
         {
-          this.state.successAdd && (
-            <div className='alert alert-success alert-dismissible display-card'>
-              <button type="button" className="close" data-dismiss="alert">&times;</button>
+          (this.state.successAdd && this.state.succAlert) && (
+            <div className='alert alert-success add-alert display-card'>
               Added User Successfully.
+              <span onClick={e => {this.setState({successAlert: false})}}>&nbsp;&times;</span>
             </div>
           )
         }
@@ -331,6 +337,7 @@ class AddUser extends Component {
                 id='kyc'
                 className="form-control"
                 maxLength='40'
+                required
                 onChange={e => this.changeHandler(e.target.name, e.target.value)}
               />
             </div>

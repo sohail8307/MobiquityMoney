@@ -25,7 +25,7 @@ describe('Search form simulate', () => {
         value: '123456'
       }
     });
-    expect(search.state('number')).toEqual('123456');
+    expect(search.state('number')).toEqual(123456);
   });
 
   it('View details from number success', async() => {

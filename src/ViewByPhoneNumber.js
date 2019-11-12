@@ -9,7 +9,7 @@ import './User.css'
 class SearchUser extends Component {
   state = {
     number: null,
-    user: [],
+    user: null,
     err: false,
     errMsg: '',
     loading: false
@@ -33,9 +33,9 @@ class SearchUser extends Component {
       }
     })
       .then(res => {
-        if(res.data.length) {
+        if(res.data) {
           this.setState({
-            user: res.data,
+            user: JSON.parse(res.data.message),
             err: false,
             errMsg: '',
             loading: false
@@ -43,7 +43,7 @@ class SearchUser extends Component {
         }
         else {
           this.setState({
-            user: [],
+            user: null,
             err: true,
             errMsg: 'No data found',
             loading: false
@@ -51,10 +51,13 @@ class SearchUser extends Component {
         }
       })
       .catch(err => {
+        let message = 'Connection failure';
+        if(err.respone)
+          message  = err.response.data.message;
         this.setState({
-          user: [],
+          user: null,
           err: true,
-          errMsg: 'Connection failure',
+          errMsg: message,
           loading: false
         });
       })
@@ -86,7 +89,7 @@ class SearchUser extends Component {
         </div>
         <div>
           {
-            (this.state.user.length !== 0 && !this.state.err) && (
+            (this.state.user && !this.state.err) && (
               <table className='user-details table-bordered'>
                 <thead>
                   <tr>
@@ -95,35 +98,20 @@ class SearchUser extends Component {
                     <th>Email</th>
                     <th>Gender</th>
                     <th>Age</th>
+                    <th>KYC ID</th>
                     <th>Address</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                { 
-                  this.state.user.map((item, index) => (
-                    <User key={index} details={item} />
-                  ))
-                }
+                  <User details={this.state.user} />
                 </tbody>
-                <tfoot style={{textAlign: 'center'}}>
-                  <tr>
-                    <td colSpan={6}>
-                    {
-                      this.state.user.length > 1 ? (
-                        <div className='alert alert-warning'>Warning! More than 1 user found</div>
-                      ) : (
-                        <div className='alert alert-success'>User fetched successfully</div>
-                      )
-                    }
-                    </td>
-                  </tr>
-                </tfoot>
               </table>
             ) 
           }
           {
             this.state.err && (
-              <div className='alert alert-danger'>
+              <div className='alert view-alert alert-danger'>
                 {this.state.errMsg}
               </div>
             )

@@ -4,6 +4,7 @@ header {
   width:auto;
   background-image: -webkit-linear-gradient(right, #e00, #e9a);
   box-shadow: 0 5px 5px grey;
+  color: white;
 }
 
 img {

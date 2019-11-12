@@ -36,10 +36,13 @@ class ViewAll extends Component {
         }
       })
       .catch(err => {
+        let message = 'Connection failure';
+        if(err.response)
+          message  = err.response.message;
         this.setState({
           err: true,
           users: [],
-          errMsg: 'Connection failure',
+          errMsg: message,
           success: false,
           loading: false
         });
@@ -74,7 +77,9 @@ class ViewAll extends Component {
                   <th>Email</th>
                   <th>Gender</th>
                   <th>Age</th>
+                  <th>KYC ID</th>
                   <th>Address</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,7 +91,7 @@ class ViewAll extends Component {
               </tbody>
               <tfoot style={{textAlign: 'center'}}>
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={7}>
                   {
                     `${this.state.users.length} results fetched.`
                   }
