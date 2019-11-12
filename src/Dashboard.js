@@ -32,6 +32,7 @@ class Dashboard extends Component {
         }
         <div className='user-nav'>
           {
+            
             ck.get('user') && (
               <span>
                 Welcome&nbsp;

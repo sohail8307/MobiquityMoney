@@ -1,12 +1,10 @@
 .user-nav {
-  position: absolute;
-  left: 0;
-  top: 100px;
   padding: 10px;
   background-color: #ffe6e6;
-  
-  
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .user-nav div {
@@ -15,4 +13,8 @@
 
 .is-active {
   color: black;
+}
+
+.side-bar-toggle {
+  float: left;
 }

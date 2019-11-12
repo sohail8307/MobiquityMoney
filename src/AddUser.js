@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import Loader from 'react-loader-spinner'
 import axios from 'axios'
+import './Form.css'
 
 class AddUser extends Component {
   state = {
@@ -19,6 +20,7 @@ class AddUser extends Component {
     lastname: '',
     age: null,
     phoneNo: null,
+    kycID: '',
     email: '',
     gender: '',
     houseNo: '',
@@ -40,6 +42,7 @@ class AddUser extends Component {
       lastname: this.state.lastname,
       age: this.state.age,
       phoneNo: this.state.phoneNo,
+      kycID: this.state.kycID,
       email: this.state.email,
       gender: this.state.gender,
       houseNo: this.state.houseNo,
@@ -53,7 +56,7 @@ class AddUser extends Component {
     //for(const [key, value] of data.entries())
       //body[key] = value
     console.log(body)
-    axios.post('http://192.168.105.162:8080/add', body, {
+    axios.post(`${process.env.REACT_APP_API_URL}/add`, body, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -190,222 +193,245 @@ class AddUser extends Component {
         }
         <h2 className='form-heading'>New User SignUp</h2>
         <form onSubmit={this.mySubmitHandler}  className="needs-validation">
-
-          <div className="form-group sign-up-form">
-            <label htmlFor='firstname'>
-              Enter your first name:
-            </label>    
-            <input
-              placeholder="Type your first name"
-              type='text'
-              name='firstname'
-              id='firstname'
-              required
-              className="form-control"
-              onChange={this.nameHandler}
-              minLength='3'
-              maxLength='20'
-            />
-            {
-              this.state.errFirstName && (
-                <strong>First Name must have 3-20 alphabets</strong>
-              )
-            }
-            <br/>
-            
-            <label htmlFor='lastname'>
-              Enter your last name: 
-            </label> 
-            <input
-              placeholder="Type your last name"
-              type='text'
-              name='lastname'
-              id='lastname'
-              required
-              className="form-control"
-              onChange={this.nameHandler}
-              minLength='3'
-              maxLength='20'
-            />
-            {
-              this.state.errLastName && (
-                <strong>Last Name must have 3-20 alphabets</strong>
-              )
-            }
-            <br/>
-
-            <label htmlFor='age'>
-              Enter your age:
-            </label>  
-            <input
-              placeholder="Type your age"
-              type='number'
-              name='age'
-              id='age'
-              required
-              className="form-control"
-              onChange={this.ageHandler}
-              min='18'
-            />
-            {
-              this.state.errAge && (
-                <strong>Invalid, age must be atleast 18</strong>
-              )
-             }
-            <hr/>
-     
-            <label htmlFor='ph'>
-              Enter phone number:&nbsp;  
-            </label> 
-            <input
-              placeholder="your 10 digit phone number"
-              type='number'
-              name='phoneNo'
-              id='ph'
-              required
-              className="form-control"
-              onChange={this.phoneHandler}
-              min='1000000000'
-              max='9999999999'
-            />
-            {
-              this.state.errPh && (
-                <strong>Number must have 10 digits</strong>
-              )
-            }
-            <br/>
-
-            <label htmlFor='email'>
-              Enter your Email:&nbsp;  
-            </label> 
-            <input
-              placeholder="Enter Email ID"
-              type='email'
-              name='email'
-              id='email'
-              required
-              className="form-control"
-              onChange={this.emailHandler}
-              maxLength='40'
-            />
-            {
-              this.state.errEmail && (
-                <strong>Invalid Format</strong>
-              )
-            }
-            <br/>
-
-            <label htmlFor= 'dropdown'>
-              Gender:
-            </label> 
-            <select 
-              id="dropdown" 
-              onChange={e => this.changeHandler(e.target.name, e.target.value)}  
-              required
-              className="form-control"
-              name='gender'
-              
-            >
-              <option value=''>Select Gender</option>
-              <option value="Do not want to disclose">Do not want to disclose</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Others">Others</option>
-            </select>
-            <br/>
-     
-            <label htmlFor= 'Addrhouseno'>
-              House number: 
-            </label>  
-            <input
-              placeholder="House number"
-              type='text'
-              name='houseNo'
-              id='Addrhouseno'
-              className="form-control"
-              maxLength='10'
-              onChange={e => this.changeHandler(e.target.name, e.target.value)}
+          <div className='form-row'>
+            <div className='form-group col-md-6'>
+              <label htmlFor='firstname'>
+                First name
+              </label>    
+              <input
+                placeholder="Enter first name here"
+                type='text'
+                name='firstname'
+                id='firstname'
+                required
+                className="form-control"
+                onChange={this.nameHandler}
+                minLength='3'
+                maxLength='20'
               />
-            <br/>
-
-            <label htmlFor= 'Addrhousestreet'>
-              Street and Locality: 
-            </label>  
-            <input
-              placeholder="Street Name"
-              type='text'
-              name='street'
-              id='Addrhousestreet'
-              required
-              className="form-control"
-              maxLength='50'
-              onChange={e => this.changeHandler(e.target.name, e.target.value)}
-            />
-            <br/>
-
-            <label htmlFor= 'Addrhousecountry'>
-              Country
-            </label>    
-            <CountryDropdown
-              id='Addrhousecountry'
-              value={country}
-              required
-              className="form-control"
-              onChange={(val) => this.selectCountry(val)} 
-              name='country'
-            />
-            <br/>
-
-            <label htmlFor= 'Addrhousestate'>
-              State:
-            </label>    
-            <RegionDropdown
-              id='Addrhousestate'
-              country={country}
-              value={region}
-              required
-              className="form-control"
-              onChange={(val) => this.selectRegion(val)} 
-              name='state'
-            />
-            <br/>
-        
-            <label htmlFor='city'>
-              City:
-            </label> 
-            <input
-              placeholder="City"
-              id='city'
-              type='text'
-              name='city'
-              required
-              className="form-control"
-              maxLength='20'
-              onChange={e => this.changeHandler(e.target.name, e.target.value)}
-            />
-            <br/>
-
-            <label htmlFor='pin'>
-              Address pincode:&nbsp; 
-            </label>
-            <input
-              placeholder="pincode"
-              id='pin'
-              type='number'
-              name='pincode'
-              required
-              className="form-control"
-              onChange={this.pincodeHandler}
-            />
-            {
-              this.state.errPin && (
-                <strong>Pincode must have 6 digits</strong>
-              )
-            }
-            <br/>
-
-            <button type="submit" className="btn btn-primary">Submit</button>     
+              {
+                this.state.errFirstName && (
+                  <strong>First Name must have 3-20 alphabets</strong>
+                )
+              }
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor='lastname'>
+                Last name
+              </label> 
+              <input
+                placeholder="Enter last name here"
+                type='text'
+                name='lastname'
+                id='lastname'
+                required
+                className="form-control"
+                onChange={this.nameHandler}
+                minLength='3'
+                maxLength='20'
+              />
+              {
+                this.state.errLastName && (
+                  <strong>Last Name must have 3-20 alphabets</strong>
+                )
+              }
+            </div>
           </div>
+          <div className='form-row'>
+            <div className='form-group col-md-3'>
+              <label htmlFor='age'>
+                Age
+              </label>  
+              <input
+                placeholder="Enter age here"
+                type='number'
+                name='age'
+                id='age'
+                required
+                className="form-control"
+                onChange={this.ageHandler}
+                min='18'
+              />
+              {
+                this.state.errAge && (
+                  <strong>Invalid, age must be atleast 18</strong>
+                )
+              }
+            </div>
+            <div className='form-group col-md-3'>
+              <label htmlFor= 'dropdown'>
+                Gender
+              </label> 
+              <select 
+                id="dropdown" 
+                onChange={e => this.changeHandler(e.target.name, e.target.value)}  
+                required
+                className="form-control"
+                name='gender'
+                
+              >
+                <option value=''>Select Gender</option>
+                <option value="Do not want to disclose">Do not want to disclose</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor='email'>
+                Email
+              </label> 
+              <input
+                placeholder="Enter email ID here"
+                type='email'
+                name='email'
+                id='email'
+                required
+                className="form-control"
+                onChange={this.emailHandler}
+                maxLength='40'
+              />
+              {
+                this.state.errEmail && (
+                  <strong>Invalid Format</strong>
+                )
+              }
+            </div>
+          </div>
+          <div className='form-row'>
+            <div className='form-group col-md-6'> 
+              <label htmlFor='ph'>
+                Phone number
+              </label> 
+              <input
+                placeholder="Enter 10 digit phone number here"
+                type='number'
+                name='phoneNo'
+                id='ph'
+                required
+                className="form-control"
+                onChange={this.phoneHandler}
+                min='1000000000'
+                max='9999999999'
+              />
+              {
+                this.state.errPh && (
+                  <strong>Number must have 10 digits</strong>
+                )
+              }
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor= 'kyc'>
+                KYC ID
+              </label>  
+              <input
+                placeholder="KYC Document no."
+                type='text'
+                name='kycID'
+                id='kyc'
+                className="form-control"
+                maxLength='40'
+                onChange={e => this.changeHandler(e.target.name, e.target.value)}
+              />
+            </div>
+          </div>
+          <div className='form-row'>
+            <div className='form-group col-md-6'>
+              <label htmlFor= 'Addrhouseno'>
+                Address Line 1
+              </label>  
+              <input
+                placeholder="House/Apt no."
+                type='text'
+                name='houseNo'
+                id='Addrhouseno'
+                className="form-control"
+                maxLength='40'
+                onChange={e => this.changeHandler(e.target.name, e.target.value)}
+              />
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor= 'Addrhousestreet'>
+                Address Line 2
+              </label>  
+              <input
+                placeholder="Street and Locality"
+                type='text'
+                name='street'
+                id='Addrhousestreet'
+                required
+                className="form-control"
+                maxLength='50'
+                onChange={e => this.changeHandler(e.target.name, e.target.value)}
+              />
+            </div>
+          </div>
+          <div className='form-row'>
+              <div className='form-group col-md-6'>
+                <label htmlFor= 'Addrhousecountry'>
+                  Country
+                </label>    
+                <CountryDropdown
+                  id='Addrhousecountry'
+                  value={country}
+                  required
+                  className="form-control"
+                  onChange={(val) => this.selectCountry(val)} 
+                  name='country'
+                />
+              </div>
+              <div className='form-group col-md-6'>
+                <label htmlFor= 'Addrhousestate'>
+                  State
+                </label>    
+                <RegionDropdown
+                  id='Addrhousestate'
+                  country={country}
+                  value={region}
+                  required
+                  className="form-control"
+                  onChange={(val) => this.selectRegion(val)} 
+                  name='state'
+                />
+              </div>
+          </div>
+          <div className='form-row'>
+            <div className='form-group col-md-6'>
+              <label htmlFor='city'>
+                City
+              </label> 
+              <input
+                placeholder="City"
+                id='city'
+                type='text'
+                name='city'
+                required
+                className="form-control"
+                maxLength='20'
+                onChange={e => this.changeHandler(e.target.name, e.target.value)}
+              />
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor='pin'>
+                Address pincode
+              </label>
+              <input
+                placeholder="pincode"
+                id='pin'
+                type='number'
+                name='pincode'
+                required
+                className="form-control"
+                onChange={this.pincodeHandler}
+              />
+              {
+                this.state.errPin && (
+                  <strong>Pincode must have 6 digits</strong>
+                )
+              }
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary">Submit</button>      
         </form>
         <Loader
           visible={this.state.loading}

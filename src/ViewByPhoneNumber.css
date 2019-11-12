@@ -1,10 +1,7 @@
-form,
+.view-user-form,
 .alert {
-  width: 50%;
+  width: 60%;
   margin: 10px auto;
 }
 
-input[type='search'] {
-  font-style: italic;
-}
 

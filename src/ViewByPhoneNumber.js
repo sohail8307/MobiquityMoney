@@ -27,7 +27,7 @@ class SearchUser extends Component {
       alert("Invalid Number");
       return false;
     }
-    axios.get(`http://192.168.105.162:8080/view/${number}`, {
+    axios.get(`${process.env.REACT_APP_API_URL}/view/${number}`, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -64,7 +64,7 @@ class SearchUser extends Component {
     return (
       <div>
         <div>
-          <form onSubmit={this.handleSumbit}>
+          <form onSubmit={this.handleSumbit} className='view-user-form'>
             <div className='input-group'>
               <div className='input-group-prepend'>
                 <span className='input-group-text'>Ph</span>

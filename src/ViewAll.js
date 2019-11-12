@@ -14,7 +14,7 @@ class ViewAll extends Component {
   }
   componentDidMount() {
     this.setState({loading: true});
-    axios.get('http://192.168.105.162:8080/viewall')
+    axios.get(`${process.env.REACT_APP_API_URL}/viewall`)
       .then(res => {
         if(res.data) {
           console.log(res.data)

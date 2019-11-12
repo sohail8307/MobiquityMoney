@@ -16,12 +16,16 @@ class SignIn extends Component {
     loading: false
   }
 
+  componentDidMount() {
+    console.log(process.env)
+  }
+
   signInHandler = event => {
     event.preventDefault()
     this.setState({loading: true})
     let username = this.state.username;
     let password = this.state.password;
-    axios.post('http://192.168.105.162:8080/adminlogin', {
+    axios.post(`${process.env.REACT_APP_API_URL}/adminlogin`, {
       username: username,
       password: password
     }, {

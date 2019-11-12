@@ -2,10 +2,15 @@
   border: 1px solid red;
   border-radius: 15px;
   box-shadow: 5px 5px 5px red;
-  margin: 25px auto;
-  width: 50%;
+  margin: 10px auto;
+  padding: 5px 25px;
+  width: 75%;
   background-image: url('./background.jpg');
   background-repeat: repeat-y;
+}
+
+.bg-box div {
+  text-align: left;
 }
 
 .form-heading {
@@ -17,11 +22,20 @@
   -webkit-text-fill-color: transparent;
 }
 
-.sign-in-form,
-.sign-up-form {
+form label {
+  font-weight: bolder;
   text-align: left;
-
 }
+
+form label::after {
+  color: red;
+  content: " *";
+}
+
+form strong {
+  color: red;
+}
+
 
 input {
   font-style: italic;
