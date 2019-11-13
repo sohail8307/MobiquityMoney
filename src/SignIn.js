@@ -6,6 +6,10 @@ import './Form.css'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
 
+/**
+ * @component Admin sign in
+ * @description Component to render sign in form for user. Sets cookies to maintain session in Dashboard.
+ */
 class SignIn extends Component {
   state = {
     redirect: false,
@@ -15,8 +19,6 @@ class SignIn extends Component {
     password: '',
     loading: false
   }
-
-  
 
   signInHandler = event => {
     event.preventDefault()
@@ -33,7 +35,6 @@ class SignIn extends Component {
     })
       .then(res => {
         if(res.data) {
-          //console.log(res)
           let ck = new Cookies();
           let date = new Date();
           date.setTime(date.getTime() + (60 * 60 * 1000));
@@ -65,14 +66,6 @@ class SignIn extends Component {
           loading: false
         });
       })
-      /*let ck = new Cookies();
-      let date = new Date();
-      date.setTime(date.getTime() + (60 * 60 * 1000));
-      ck.set('user', {
-        username: 'dummy',
-        token: 'xxxx1234'
-      }, {expires: date, path: '/'});
-      this.setState({redirect: true});*/
   }
 
   myChangeHandler = event => {

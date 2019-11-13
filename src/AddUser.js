@@ -1,9 +1,12 @@
-import React, {Component} from 'react'
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
-import Loader from 'react-loader-spinner'
-import axios from 'axios'
-import './Form.css'
+import React, {Component} from 'react';
+import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
+import Loader from 'react-loader-spinner';
+import axios from 'axios';
+import './Form.css';
 
+/**
+ * 
+ */
 class AddUser extends Component {
   state = {
     loading: false,
@@ -53,6 +56,7 @@ class AddUser extends Component {
       state: this.state.region,
       city: this.state.city,
       pincode: this.state.pincode,
+      Status: "Y"
     }
     //console.log(body)
     //for(const [key, value] of data.entries())

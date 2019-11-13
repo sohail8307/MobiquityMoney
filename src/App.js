@@ -8,11 +8,12 @@ import {Route, BrowserRouter} from 'react-router-dom'
 import Dashboard from './Dashboard'
 import SignIn from './SignIn'
 
+
+/**
+ * @component Wrapper component of the entire SPA
+ * @description Stateless functional component. Uses 'react-router-dom' to route to various paths
+ */
 function App() {
-  //let date = new Date();
-  //date.setTime(date.getTime() + (10 * 1000));
-  //ck.set('user', 'Hello', {expires: date})
-  //ck.remove('user')
   return (
   <div className="App">
     <Header />

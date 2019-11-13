@@ -6,23 +6,22 @@ import ViewUser from './ViewByPhoneNumber'
 import ViewAll from './ViewAll'
 import './Dashboard.css'
 
-
+/**
+ * @component Admin Dashboard 
+ * @requires Cookie('user') to be set to access the component, else redirects to SIgin In page.
+ * @description Component to render admin's view of dashboard. Has links to various admin privilages. Uses 'react-cookie' to check whether admin is logged in.
+ */
 class Dashboard extends Component {
   state = {
     redirect: true,
-    cookie: null,
   }
 
-  /*componentWillMount() {
-    let ck1 = new Cookies()
-    if(ck1.get('user')) 
-      this.setState({redirect: false})
-  }*/
   signOutHandler = event => {
     let ck2 = new Cookies()
     ck2.remove('user', {path: '/'})
     this.setState({redirect: true})
   }
+
   render() {
     const ck = new Cookies()
     return (

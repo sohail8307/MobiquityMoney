@@ -29,7 +29,7 @@ describe('Search form simulate', () => {
   });
 
   it('View details from number success', async() => {
-    axios.get.mockImplementation((url, data, header) => Promise.resolve({ data: true }));
+    axios.get.mockImplementation((url, data, header) => Promise.resolve({ data: {message: true} }));
     search.find('input[type="search"]').simulate('change', {
       target: {
         name: 'phone',
