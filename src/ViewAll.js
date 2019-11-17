@@ -26,7 +26,6 @@ class ViewAll extends Component {
     axios.get(`${process.env.REACT_APP_API_URL}/viewall`)
       .then(res => {
         if(res.data) {
-          console.log(res.data)
           this.setState({
             success: true,
             users: res.data,

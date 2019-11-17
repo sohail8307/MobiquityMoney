@@ -127,6 +127,16 @@ describe('Add user form simulation', () => {
     expect(add.state('gender')).toEqual('Male');
   });
 
+  it('KYC valid entry', () => {
+    add.find('input#kyc').simulate('change', {
+      target: {
+        name: 'kycID',
+        value: 'AAAAA'
+      }
+    });
+    expect(add.state('kycID')).toEqual('AAAAA');
+  });
+
   it('House number valid entry', () => {
     add.find('input#Addrhouseno').simulate('change', {
       target: {
@@ -230,6 +240,15 @@ describe('Add user form simulation', () => {
       }
     });
 
+    
+    add.find('input#kyc').simulate('change', {
+      target: {
+        name: 'kycID',
+        value: 'AAAAA'
+      }
+    });
+      
+
     add.find('input#Addrhouseno').simulate('change', {
       target: {
         name: 'houseNo',
@@ -310,6 +329,13 @@ describe('Add user form simulation', () => {
       target: {
         name: 'gender',
         value: 'Male'
+      }
+    });
+
+    add.find('input#kyc').simulate('change', {
+      target: {
+        name: 'kycID',
+        value: 'AAAAA'
       }
     });
 

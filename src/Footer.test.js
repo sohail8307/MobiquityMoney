@@ -1,10 +1,10 @@
 import React from 'react';
-import App from './App';
+import Footer from './Footer';
 import {shallow} from 'enzyme';
 
 describe("Smoke test Main App", () => {
   it('renders without crashing', () => {
-    shallow(<App />);
+    shallow(<Footer />);
   });
 })
 
