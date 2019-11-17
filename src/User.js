@@ -1,6 +1,11 @@
-import React, {Component} from 'react'
-import './User.css'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types'
+import './User.css';
 
+/**
+ * @component User details component
+ * @description Component to render user details in form of table. This is reusable provided table is defined in parent component.
+ */
 class User extends Component {
   render() {
   return this.props.details ? (
@@ -54,4 +59,7 @@ class User extends Component {
   }
 }
 
+User.propTypes = {
+  details: PropTypes.object.isRequired
+}
 export default User

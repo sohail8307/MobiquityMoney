@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import {Redirect, Route, Switch, NavLink} from 'react-router-dom'
-import {Cookies} from 'react-cookie'
-import AddUser from './AddUser'
-import ViewUser from './ViewByPhoneNumber'
-import ViewAll from './ViewAll'
-import './Dashboard.css'
+import React, { Component } from 'react';
+import {Redirect, Route, Switch, NavLink} from 'react-router-dom';
+import {Cookies} from 'react-cookie';
+import AddUser from './AddUser';
+import ViewUser from './ViewByPhoneNumber';
+import ViewAll from './ViewAll';
+import './Dashboard.css';
 
 /**
  * @component Admin Dashboard 
- * @requires Cookie('user') to be set to access the component, else redirects to SIgin In page.
+ * @requires Cookie('user') to be set to access the component, else redirects to Sigin In page.
  * @description Component to render admin's view of dashboard. Has links to various admin privilages. Uses 'react-cookie' to check whether admin is logged in.
  */
 class Dashboard extends Component {
@@ -16,14 +16,17 @@ class Dashboard extends Component {
     redirect: true,
   }
 
-  signOutHandler = event => {
-    let ck2 = new Cookies()
-    ck2.remove('user', {path: '/'})
-    this.setState({redirect: true})
+  /**
+   * @description The function removes cookies set while sign in. Then it changes state to redirect to Sign in page.
+   */
+  signOutHandler = () => {
+    let ck2 = new Cookies();
+    ck2.remove('user', {path: '/'});
+    this.setState({redirect: true});
   }
 
   render() {
-    const ck = new Cookies()
+    const ck = new Cookies();
     return (
       <div >       
         {
@@ -86,4 +89,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+export default Dashboard;

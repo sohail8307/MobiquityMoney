@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import {Cookies} from 'react-cookie'
-import {Redirect} from 'react-router-dom'
-import axios from 'axios'
-import './Form.css'
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
-import Loader from 'react-loader-spinner'
+import React, { Component } from 'react';
+import {Cookies} from 'react-cookie';
+import {Redirect} from 'react-router-dom';
+import axios from 'axios';
+import './Form.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from 'react-loader-spinner';
 
 /**
  * @component Admin sign in
@@ -20,9 +20,13 @@ class SignIn extends Component {
     loading: false
   }
 
+  /**
+   * @param {event} event The event triggered for sign in
+   * @description The function which validates sign in and sets cookie if validated.
+   */
   signInHandler = event => {
-    event.preventDefault()
-    this.setState({loading: true})
+    event.preventDefault();
+    this.setState({loading: true});
     let username = this.state.username;
     let password = this.state.password;
     axios.post(`${process.env.REACT_APP_API_URL}/adminlogin`, {
@@ -65,9 +69,13 @@ class SignIn extends Component {
           errMsg: message,
           loading: false
         });
-      })
+      });
   }
 
+  /**
+   * @param {event} event The event triggered for change of form element
+   * @description The function which sets state for respective form fields on change.
+   */
   myChangeHandler = event => {
     let nam = event.target.name;
     let val = event.target.value;
@@ -79,12 +87,12 @@ class SignIn extends Component {
       <div className='bg-box'>
         {
           this.state.redirect && (
-          <Redirect to={{
-            pathname: '/Dashboard',
-            state: {
-              username: this.state.username
-            }
-          }}/>
+            <Redirect to={{
+              pathname: '/Dashboard',
+              state: {
+                username: this.state.username
+              }
+            }}/>
           )
         }
         <h2 className='form-heading'>Sign In</h2>
@@ -144,4 +152,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn
+export default SignIn;

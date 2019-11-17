@@ -5,7 +5,8 @@ import axios from 'axios';
 import './Form.css';
 
 /**
- * 
+ * @component The Adding user form component
+ * @description Component to render form for adding a new user. It performs various validations required.
  */
 class AddUser extends Component {
   state = {
@@ -36,12 +37,38 @@ class AddUser extends Component {
     succAlert: false
   }
 
+
+  /**
+   * @returns {boolean} validty - The validity of the form according to rules
+   * @description The function checks error states of fields as well as the fields themselves. Returns true if validated else false.
+   */
+  isFormValid = () => {
+    return (!(this.state.errFirstName || this.state.errLastName || this.state.errAge
+      || this.state.errPh || this.state.errEmail || this.state.errPin) && (
+        this.state.firstname && this.state.lastname && this.state.age && this.state.phoneNo && this.state.gender &&
+        this.state.email && this.state.kycID && this.state.houseNo && this.state.street && this.state.city
+        && this.state.pincode && this.state.country && this.state.region
+      ));
+  }
+
+  /**
+   * @param {event} event The event triggered when submit button is clicked.
+   * @returns {boolean} - False if form not validated.
+   * @description This function uses the state of form and sends it as body to AJAX. Also it set states for success/error.
+   */
   mySubmitHandler = event => {       
     event.preventDefault();
     event.persist();
+    if(!this.isFormValid()) {
+      this.setState({errorAdd: true,
+        errMsg: 'One or more fields are invalid',
+        successAdd: false,
+        loading: false,
+        errAlert: true
+      });
+      return false;
+    }
     this.setState({loading: true});
-    //console.log(data)
-    //data.append("customerID", event.target.phoneNo.value)
     let body = {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
@@ -58,17 +85,13 @@ class AddUser extends Component {
       pincode: this.state.pincode,
       Status: "Y"
     }
-    //console.log(body)
-    //for(const [key, value] of data.entries())
-      //body[key] = value
-    console.log(body)
+
     axios.post(`${process.env.REACT_APP_API_URL}/add`, body, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(res => {
-        //console.log(res)
         if(res.data) {
           this.setState({
             successAdd: true,
@@ -103,11 +126,20 @@ class AddUser extends Component {
   }
   
 
+  /**
+   * @param {string} name The name of the parameter.
+   * @param {string} value The value of the parameter.
+   * @description The function to set state for the respective fields.
+   */
   changeHandler = async(name, value) => {
     await this.setState({[name]: value});
   }
   
 
+  /**
+   * @param {event} event The name change event
+   * @description The function to validate the name.
+   */
   nameHandler = event => {
     let name = event.target.name;
     let value = event.target.value;
@@ -128,6 +160,11 @@ class AddUser extends Component {
     
   }
 
+
+  /**
+   * @param {event} event The age field change event
+   * @description The function to validate age.
+   */
   ageHandler = event => {
     let name = event.target.name;
     let value = Number(event.target.value).toString();
@@ -140,6 +177,10 @@ class AddUser extends Component {
   }
 
   
+  /**
+   * @param {event} event The phone number field change event
+   * @description The function to validate phone number.
+   */
   phoneHandler = event => {
     let name = event.target.name;
     let value = Number(event.target.value).toString();
@@ -150,26 +191,44 @@ class AddUser extends Component {
       this.setState({errPh: false});
   }
 
+  /**
+   * @param {event} event The email field change event
+   * @description The function to validate email.
+   */
   emailHandler = event => {
     let name = event.target.name;
     let value = event.target.value;
     this.changeHandler(name, value);
 
-    var emailpatt = /^[a-zA-Z0-9]+[@][a-z]+[.][a-z]/;
+    var emailpatt = /^[^@' ']+[@][a-z]+[.][a-z]/;
     if(value === '' || !emailpatt.test(value)) 
       this.setState({errEmail: true});
     else
       this.setState({errEmail: false});
   }
 
+  /**
+   * @param {string} value The country selected
+   * @requires The library 'react-country-region-selector'.
+   * @description The function to set country.
+   */
   selectCountry = value => {
     this.changeHandler('country', value);
   }
 
+  /**
+   * @param {string} value The region selected
+   * @requires The library 'react-country-region-selector'.
+   * @description The function to set region.
+   */
   selectRegion = value => {
     this.changeHandler('region', value);
   }
   
+  /**
+   * @param {event} event The pincode field change event
+   * @description The function to validate pincode.
+   */
   pincodeHandler = event => {
     let name = event.target.name;
     let value = Number(event.target.value).toString();
@@ -189,7 +248,7 @@ class AddUser extends Component {
           (this.state.errorAdd && this.state.errAlert) && (
             <div className='alert alert-danger add-alert display-card'>
               {this.state.errMsg}
-              <span onClick={e => {this.setState({errAlert: false})}}>&nbsp;&times;</span>
+              <span onClick={() => {this.setState({errAlert: false})}}>&nbsp;&times;</span>
             </div>
           )
         }
@@ -197,7 +256,7 @@ class AddUser extends Component {
           (this.state.successAdd && this.state.succAlert) && (
             <div className='alert alert-success add-alert display-card'>
               Added User Successfully.
-              <span onClick={e => {this.setState({successAlert: false})}}>&nbsp;&times;</span>
+              <span onClick={() => {this.setState({successAlert: false})}}>&nbsp;&times;</span>
             </div>
           )
         }
@@ -454,7 +513,7 @@ class AddUser extends Component {
         />
       </div>
     )
-  };
+  }
 }
 
 export default AddUser

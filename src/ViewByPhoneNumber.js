@@ -1,11 +1,16 @@
-import React, {Component} from 'react'
-import axios from 'axios'
-import './ViewByPhoneNumber.css'
-import User from './User'
-import Loader from 'react-loader-spinner'
-import './Form.css'
-import './User.css'
+import React, {Component} from 'react';
+import axios from 'axios';
+import './ViewByPhoneNumber.css';
+import User from './User';
+import Loader from 'react-loader-spinner';
+import './Form.css';
+import './User.css';
 
+/**
+ * @component View User by Number
+ * @requires 'User' component
+ * @description Component to render view user with phone number form.
+ */
 class SearchUser extends Component {
   state = {
     number: null,
@@ -15,18 +20,30 @@ class SearchUser extends Component {
     loading: false
   }
 
+  /**
+   * @param {event} event The phone number change event.
+   * @description Function to set phone number in state on field change.
+   */
   numChangeHandler = event => {
     this.setState({number: Number(event.target.value)});
   }
 
+  /**
+   * @param {event} event The form submit event.
+   * @returns boolean False if invalid number entered.
+   * @description Function which makes an AJAX call with entered phone number.
+   */
   handleSumbit = event => {
     event.preventDefault();
-    this.setState({loading: true});
     let number = this.state.number;
     if(!(number >= 1000000000 && number <= 9999999999)) {
-      alert("Invalid Number");
+      this.setState({
+        user: null,
+        err: true,
+      });
       return false;
     }
+    this.setState({loading: true});
     axios.get(`${process.env.REACT_APP_API_URL}/view/${number}`, {
       headers: {
         'Content-Type': 'application/json'

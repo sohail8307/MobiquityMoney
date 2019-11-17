@@ -1,9 +1,14 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import User from './User'
-import Loader from 'react-loader-spinner'
-import './User.css'
+import React, { Component } from 'react';
+import axios from 'axios';
+import User from './User';
+import Loader from 'react-loader-spinner';
+import './User.css';
 
+/**
+ * @component View All users 
+ * @requires 'User' component
+ * @description Component to render view all user details. 
+ */
 class ViewAll extends Component {
   state = {
     users: [],
@@ -12,6 +17,10 @@ class ViewAll extends Component {
     errMsg: '',
     loading: false
   }
+
+  /**
+   * @description Creates an AJAX call on mount to fetch all user details.
+   */
   componentDidMount() {
     this.setState({loading: true});
     axios.get(`${process.env.REACT_APP_API_URL}/viewall`)

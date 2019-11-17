@@ -1,5 +1,5 @@
 import React from 'react';
-import './Util.css'
+import './Util.css';
 
 /**
  * @component Static component for footer
