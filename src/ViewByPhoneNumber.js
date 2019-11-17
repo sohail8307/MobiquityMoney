@@ -40,6 +40,7 @@ class SearchUser extends Component {
       this.setState({
         user: null,
         err: true,
+        errMsg: 'Invalid Phone number'
       });
       return false;
     }
